@@ -41,10 +41,10 @@ module.exports = {
 
         res.cookie('user', req.body.email, {maxAge: 1000 * 60 * 60 * 24}) // cuanto tiempo se queda logueado el usuario
         let all = index();
-        res.session.user = all.find(user => user.email == req.body.email)
+        req.session.user = all.find(user => user.email == req.body.email)
 
 
-    return res.rediret('/')
+    return res.redirect('/')
    }
 }
 
