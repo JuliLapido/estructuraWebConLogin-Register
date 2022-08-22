@@ -6,11 +6,20 @@
         <a href="/">
             <i class="fa-solid fa-home"></i>
         </a>
-        <a href="/users/login">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-        </a>
-        <a href="/users/register">
-            <i class="fa-solid fa-plus"></i>
+        <% if (!user) { %>
+            <a href="/users/login">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </a>
+            <a href="/users/register">
+                <i class="fa-solid fa-plus"></i>
+        
+        <% } else { %>
+            <a href="/users/profile">
+                <i class="fa-solid fa-user"></i>
+            </a>
+                <a href="/users/logout">
+                    <i class="fa-solid fa-door-closed"></i>
+            <% } %>
         </a>
     </nav>
 </header>

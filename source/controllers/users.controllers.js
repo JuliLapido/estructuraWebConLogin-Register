@@ -1,5 +1,6 @@
 const {index,write} = require('../models/users.model');
 const {validationResult} = require("express-validator");
+const {hashSync} = require('bcrypt');
 
 module.exports = {
     login: (req,res) => res.render('users/login'),
@@ -20,7 +21,8 @@ module.exports = {
         //si pasamos las validaciones
         let all = index();
         req.body.avatar = req.files && req.files[0] ? req.files[0].filename : null
-        req.body.id = all.length > 0 ? all.pop().id + 1 : 1
+        req.body.id = all.length > 0 ? index().pop().id + 1 : 1
+        req.body.password = hashSync(req.body.password,10)
         let user = {...req.body};
         all.push(user)
         write(all)
@@ -37,6 +39,7 @@ module.exports = {
                 data: req.body
             })
         }
+        
 
 
         res.cookie('user', req.body.email, {maxAge: 1000 * 60 * 60 * 24}) // cuanto tiempo se queda logueado el usuario
@@ -45,7 +48,12 @@ module.exports = {
 
 
     return res.redirect('/')
-   }
+   },
+   logout:(req, res) => {
+    delete req.session.user
+    res.cookie('user', null, {maxAge: -1})
+    return res.redirect('/')
+}
 }
 
 
